@@ -1,6 +1,7 @@
 <script setup>
 import Header from './components/Header.vue';
 import Form from './components/Form.vue';
+import ToggleProactive from './components/toggle-proactive.vue' // ✅ 確保正確路徑
 </script>
 
 <template>
@@ -8,6 +9,7 @@ import Form from './components/Form.vue';
     <Header />
     <main>
       <Form />
+	  <ToggleProactive />
     </main>
   </div>
 </template>
