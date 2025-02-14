@@ -15,15 +15,15 @@
     <!-- 使用條款 -->
     <div class="card">
       <h2>
-	  報名紀錄使用條款(請下滑至底部並勾選確認)
+	  報名紀錄使用條款(請蒐集貓貓並勾選確認)
 	  </h2>
       <div id="termsContainer" class="content">
-        <p :ref="titleRefList.set">親愛的玩家：</p>
+        <p :ref="titleRefList.set">🐈親愛的玩家：🐈</p>
         <p>為了提升網站安全性和服務品質，我們將會收集 Cookie。</p>
         <b>相關資訊將會經加密演算法處理，避免產生可以直接識別您身份的個人資料。</b>
         <a href="https://cryptojs.gitbook.io/docs/">演算法參考文檔</a>
 
-        <p :ref="titleRefList.set">我們使用 Cookies 的目的：</p>
+        <p :ref="titleRefList.set">🐈我們使用 Cookies 的目的：🐈</p>
         <ul>
           <li>確保活動正常運作。</li>
           <li>提升活動品質。</li>
@@ -31,13 +31,13 @@
         </ul>
 
         <p>您的選擇：</p>
-        <p :ref="titleRefList.set">您可以選擇是否接受 Cookies，若拒絕可能無法使用本表單。</p>
+        <p :ref="titleRefList.set">🐈您可以選擇是否接受 Cookies，若拒絕可能無法使用本表單。🐈</p>
 
         <p>聯繫方式：</p>
         <ul>
           <li>聯繫 Icy: icysdungeon@gmail.com</li>
           <li>
-            桃推相關粉專：
+            🐈桃推相關粉專🐈：
             <a href="https://linktr.ee/tyntrpg" :ref="titleRefList.set">https://linktr.ee/tyntrpg</a>
           </li>
         </ul>
@@ -48,7 +48,7 @@
 			<toggle-proactive
 			  class="hand"
 			  id="confirmCheckbox"
-			  v-model="value"
+			  v-model="License"
 			  :disabled
 			  size="4rem"
 			  fur-color="#DFC57B"
@@ -59,18 +59,12 @@
 			/>
     </div>
 
-	<!-- robot -->
-	<div class="card">
-		推廣會小精靈，加入並訂閱通知。成功報名小精靈會有通知提醒你唷
-		<br>(<ゝω・) 綺羅星☆
-		<img src="../../img/bar.jpg" alt="bot" class="custom-img">
-	</div>
     <!-- 報名表單 -->
     <form @submit.prevent="submitForm">
 	  <div class="card">
 		我瞭解並同意以上注意事項（強調：報名失敗才會有專人通知，無通知代表報名自動成功）<br><br>
 		<label class="radio-button-container">是
-			<input type="radio" name="ruleCheck" value="是">
+			<input type="radio" v-model="form.ruleCheck" value="是">
 			<span class="checkmark"></span>
 		</label>
 	  </div>
@@ -78,9 +72,10 @@
 	  <div class="card">
 			報名場次（若要報名2場請填2次單）（強調：無特別通知代表報名成功，當天請準時來參加活動。）<br><br>
 			<div id="warning">註：目前報名人數較多，可能會被排為候補。<br><br></div>
-			<label class="radio-button-container" id="eventDateLabel">
-				<input type="radio" name="date" id="eventDateRadio">
-				<span class="checkmark"></span>
+			<label class="radio-button-container">
+				<input type="radio" v-model="form.date" :value="EventDate1" v-if="EventDate1">
+				<span class="checkmark"></span> 
+				<span class="radio-label">{{ EventDate1 }}</span>
 			</label>
 	  </div>
 	
@@ -92,11 +87,18 @@
       <div class="card">
         <label>請問是否有玩過TRPG?*</label>
 		<br>
-        <div v-for="option in trpgOptions" :key="option.value" class="radio-button-container">
-          <input type="radio" v-model="form.trpgexp" :value="option.value" />
-          <span class="checkmark"></span> <span v-html="option.label"></span>
-        </div>
-        <input type="text" v-model="form.otherTrpg" v-if="form.trpgexp === '其他'" placeholder="請說明" />
+        <div class="radio-group">
+		  <label v-for="option in trpgOptions" :key="option.value" class="radio-button-container">
+			<input type="radio" v-model="form.trpgexp" :value="option.value" />
+			<span class="checkmark"></span> 
+			<span class="radio-label" v-html="option.label"></span>
+		  </label>
+
+		  <!-- 額外的輸入框，僅當選擇「其他」時顯示 -->
+		  <div v-if="form.trpgexp === '其他'" class="other-input-container">
+			<input type="text" v-model="form.otherTrpg" placeholder="請說明" />
+		  </div>
+		</div>
       </div>
 
       <div class="card">
@@ -120,10 +122,11 @@
 
       <div class="card">
         <label>請問參加者年齡?*</label>
-        <div v-for="option in ageOptions" :key="option.value" class="radio-button-container">
-          <input type="radio" v-model="form.regage" :value="option.value" />
-          <span class="checkmark"></span> {{ option.label }}
-        </div>
+		<label v-for="option in ageOptions" :key="option.value" class="radio-button-container">
+			<input type="radio" v-model="form.regage" :value="option.value" />
+			<span class="checkmark"></span> 
+			<span class="radio-label" v-html="option.label"></span>
+		  </label>      
       </div>
 
       <div class="card">
@@ -135,21 +138,27 @@
 		<label>請問您是如何得知本活動的?</label>
 		<br><br>
 		<div class="custom-checkbox">
-			<input type="checkbox" id="howtoknow1" name="howtoknow" value="Discord" style="display: none;">
+			<input type="checkbox" id="howtoknow1" value="Discord" v-model="form.howtoknow">
 			<label for="howtoknow1">Discord</label><br><br>
-			<input type="checkbox" id="howtoknow2" name="howtoknow" value="FB" style="display: none;">
+
+			<input type="checkbox" id="howtoknow2" value="FB" v-model="form.howtoknow">
 			<label for="howtoknow2">FB</label><br><br>
-			<input type="checkbox" id="howtoknow3" name="howtoknow" value="IG" style="display: none;">
+
+			<input type="checkbox" id="howtoknow3" value="IG" v-model="form.howtoknow">
 			<label for="howtoknow3">IG</label><br><br>
-			<input type="checkbox" id="howtoknow4" name="howtoknow" value="Line" style="display: none;">
+
+			<input type="checkbox" id="howtoknow4" value="Line" v-model="form.howtoknow">
 			<label for="howtoknow4">Line</label><br><br>
-			<input type="checkbox" id="howtoknow5" name="howtoknow" value="桃推網站" style="display: none;">
+
+			<input type="checkbox" id="howtoknow5" value="桃推網站" v-model="form.howtoknow">
 			<label for="howtoknow5">桃推網站</label><br><br>
-			<input type="checkbox" id="howtoknow6" name="howtoknow" value="噗浪" style="display: none;">
+
+			<input type="checkbox" id="howtoknow6" value="噗浪" v-model="form.howtoknow">
 			<label for="howtoknow6">噗浪</label><br><br>
-			<input type="checkbox" id="howtoknow7" name="howtoknow" value="朋友介紹" style="display: none;">
+
+			<input type="checkbox" id="howtoknow7" value="朋友介紹" v-model="form.howtoknow">
 			<label for="howtoknow7">朋友介紹</label>
-		</div>
+		  </div>
 	  </div>
 	  
 	  <div class="card">
@@ -163,24 +172,43 @@
         </div>
 
       <div class="card">
-        <button type="submit" :disabled="!termsAccepted">提交</button>
+        <button type="submit" 
+		:disabled="!termsAccepted"
+		:class="{ 'enabled-btn': termsAccepted, 'disabled-btn': !termsAccepted }"
+		>提交</button>
       </div>
     </form>
   </div>
+  <br><br><br><br><br>
 </template>
 
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
-import { ref, reactive, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import { useTemplateRefsList } from '@vueuse/core'
 import { map, pipe } from 'remeda'
 import { useElementVisibilityTime } from '../composables/use-element-visibility-time'
-import { useRouter } from 'vue-router'
 import ToggleProactive from '../toggle-proactive.vue' 
+import CryptoJS from "crypto-js";
 
 const formTitle = ref("");
-const termsAccepted = ref(false);
-const isSubmitting = ref(false);
+const EventDate1 = ref(null);
+const SubmitwebAppUrl = ref("");
+const License = ref(false);
+
+
+const termsAccepted = computed(() => {
+	return (
+		form.value.ruleCheck !== "" &&
+		form.value.name.trim() !== "" &&
+		form.value.date !== null &&
+		form.value.trpgexp !== "" &&
+		form.value.commNum.trim() !== "" &&
+		form.value.regnum !== "" &&
+		form.value.regage !== "" &&
+		License.value
+  );
+});
 
 const titleRefList = useTemplateRefsList<HTMLElement>()
 
@@ -189,8 +217,31 @@ onMounted(() => {
   timeList.value = titleRefList.value.map((el) => {
     const { totalVisibleTime } = useElementVisibilityTime(el)
     return totalVisibleTime
-  })
+  });
+  
+  // 讀取 env.json（單獨的 async 函數）
+  loadEnvData();
 })
+
+// ✅ 把 fetch 移到獨立的 async 函數
+async function loadEnvData() {
+  try {
+    const baseUrl = import.meta.env.BASE_URL; // 取得專案的根路徑
+    const response = await fetch(`${baseUrl}env.json`); // ✅ 正確取得 env.json
+    if (!response.ok) {
+      throw new Error("Failed to fetch env.json");
+    }
+    const data = await response.json();
+    formTitle.value = data.TitleDate + '，桃園TRPG推廣活動報名表'; // 設定表單標題
+	SubmitwebAppUrl.value = data.webAppUrl;
+	
+	setTimeout(() => {
+      EventDate1.value = data.ThisEventDate; // ✅ 延遲設定，避免 Vue 預選 radio
+    }, 100);
+  } catch (error) {
+    console.error("Error loading env.json:", error);
+  }
+}
 
 /** 最小閱讀時間 */
 const MIN_READ_MS = 1000
@@ -208,20 +259,26 @@ const readRate = computed(() => pipe(
   },
 ))
 
-const disabled = computed(() => readRate.value < 100)
-const value = ref(false)
+// 計算 disabled 狀態
+const disabled = computed(() => readRate.value < 100);
 
-const form = reactive({
+// 監聽 readRate，當等於 100 時啟用 license
+watch(readRate, (newRate) => {
+  if (newRate === 100) {
+    License.value = true;
+  }
+});
+
+const form = ref({
   ruleCheck: "",
   name: "",
-  date: "",
+  date: null,
   trpgexp: "",
   otherTrpg: "",
   commNum: "",
   commMail: "",
   regnum: "",
   regage: "",
-  trpgExp: "",
   memo: "",
   userId: "",
   hashId: "",
@@ -249,65 +306,185 @@ const ageOptions = [
   { value: "46歲以上", label: "46歲以上" },
 ];
 
-const webAppUrl = ref("https://your-api-endpoint.com"); // 替換成你的 API 端點
 
 const submitForm = async () => {
-  if (!termsAccepted.value) {
-    alert("請閱讀並同意條款");
-    return;
+  console.log("提交表單", form.value);
+  alert("表單提交成功");
+  
+  form.value.userId = getCookie("userId");
+  if (!form.value.userId) 
+  {
+	form.value.userId = generateRandomId(12);
+	setCookie("userId", form.value.userId, 365); 
   }
+  checkAndResetCookie('hashId',[6, 8, 11, 22, 23, 25, 33, 36, 38, 45, 52], 'taoyuantrpg');
+  
+  
+  const formData = new URLSearchParams();
+	formData.append("ruleCheck", form.value.ruleCheck);
+	formData.append("date", form.value.date);
+	formData.append("name", form.value.name);
+	formData.append("trpgExp", form.value.trpgexp);
+	formData.append("commNum", form.value.commNum);
+	formData.append("commMail", form.value.commMail);
+	formData.append("regnum", form.value.regnum);
+	formData.append("regage", form.value.regage);
+	formData.append("memo", form.value.memo);
+	formData.append("howtoknow", form.value.howtoknow.join(",")); // 如果是陣列，轉為逗號分隔字串
+	formData.append("userId", form.value.userId);
+	formData.append("hashId", form.value.hashId);
 
-  if (!form.name || !form.commNum || !form.date || !form.commMail) {
-    alert("請填寫所有必填欄位");
-    return;
-  }
+	fetch(SubmitwebAppUrl.value+"dasdsasad", {
+	  method: "POST",
+	  headers: {
+		"Content-Type": "application/x-www-form-urlencoded",
+	  },
+	  body: formData.toString(), // 使用 URL 編碼格式
+	})
+	  .then(response => {
+		if (response.ok) {
+		  window.location.href = "finish.html";
+		} else {
+		  throw new Error("提交過程中出現錯誤");
+		}
+	  })
+	  .catch(error => {
+		alert(error.message);
+		document.getElementById("submitForm").disabled = false;
+		document.getElementById("submitForm").value = "提交";
+	  });
 
-  const formData = {
-    ruleCheck: form.ruleCheck,
-    date: form.date,
-    name: form.name,
-    trpgExp: form.trpgExp,
-    commNum: form.commNum,
-    commMail: form.commMail,
-    regnum: form.regnum,
-    regage: form.regage,
-    memo: form.memo,
-    howtoknow: form.howtoknow.join(", "),
-    userId: form.userId, // 這應該是從 Cookie 或隨機產生的
-    hashId: form.hashId, // 這應該是從瀏覽器指紋獲取的
-  };
 
-  try {
-    isSubmitting.value = true;
-    const response = await fetch(webAppUrl.value, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
 
-    const result = await response.json();
-    if (response.ok) {
-	  const router = useRouter()
-      alert("提交成功！");
-      router.push("/finish");
-    } else {
-      alert("提交失敗：" + result.error);
-    }
-  } catch (error) {
-    console.error("表單提交錯誤:", error);
-    alert("提交時發生錯誤，請稍後再試！");
-  } finally {
-    isSubmitting.value = false;
-  }
+	// try {
+		// const response = await fetch(SubmitwebAppUrl.value, {
+			// method: 'POST',
+			// mode: "cors", // 確保是跨域模式
+			// headers: {
+				// 'Content-Type': 'application/json'
+			// },
+			// body: JSON.stringify(formData)
+		// });
+
+		// if (response.ok) {
+			// window.location.href = "finish.html";
+		// } else {
+			// throw new Error("提交過程中出現錯誤。");
+		// }
+	// } catch (error) {
+		// alert("Error");
+		// const submitButton = document.getElementById('submitForm') as HTMLInputElement;
+		// if (submitButton) {
+			// submitButton.disabled = false;
+			// submitButton.value = '提交';
+		// }
+	// }
+
+  
+  License.value = false;
 };
 
-const fetchEventData = () => {
-  // 在這裡加入你的 API 請求邏輯，如果有的話
-};
+function generateBrowserFingerprint(): string{
+	const navigatorData = window.navigator;
+	const screenData = window.screen;
 
-onMounted(() => {
-  fetchEventData();
-});
+	// Basic browser informations
+	const userAgent = navigatorData.userAgent;
+	const language = navigatorData.language;
+	const platform = navigatorData.platform;
+	const screenWidth = screenData.width;
+	const screenHeight = screenData.height;
+	const colorDepth = screenData.colorDepth;
+
+	// gather data
+	const fingerprint = [
+		userAgent,
+		language,
+		platform,
+		screenWidth,
+		screenHeight,
+		colorDepth
+	].join('|');
+
+	// 使用crypto-js 生成哈希值
+	const hash: string = CryptoJS.SHA256(fingerprint).toString();
+
+	return insertStringIntoHash(hash, "taoyuantrpg", [6, 8, 11, 22, 23, 25, 33, 36, 38, 45, 52]);
+}
+
+function insertStringIntoHash(hash: string, str: string, positions: number[]): string {
+	let result = "";
+	let strIndex = 0;
+	for (let i = 0; i < hash.length; i++) {
+		// 如果当前索引是指定位置之一，则使用"taoyuantrpg"中的字符替换
+		if (positions.includes(i) && strIndex < str.length) {
+			result += str[strIndex];
+			strIndex++;
+		} else {
+			result += hash[i];
+		}
+	}
+	// 如果"taoyuantrpg"还有剩余字符，将它们追加到结果的末尾
+	if (strIndex < str.length) {
+		result += str.slice(strIndex);
+	}
+	return result;
+}
+
+
+function generateRandomId(length: number) {
+	let result = '';
+	const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	let charactersLength = characters.length;
+	for ( var i = 0; i < length; i++ ) {
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	return result;
+}
+function setCookie(name: string, value: string, days: number) {
+	let expires = "";
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime() + (days*24*60*60*1000));
+		expires = "; expires=" + date.toUTCString();
+	}
+	document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+
+function getCookie(name: string): string{
+	let nameEQ = name + "=";
+	let ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return "";
+}
+
+// 根据指定位置检查cookie值
+function checkAndResetCookie(cookieName: string, positions: number[], matchString: string) {
+	let cookieValue = getCookie(cookieName);
+	if (cookieValue) {
+		let extractedString = positions.map(pos => cookieValue[pos-1] || '').join('');
+		if (extractedString !== matchString) {
+			deleteCookie(cookieName); // 如果不匹配，则删除cookie
+			form.value.hashId = generateBrowserFingerprint();
+			setCookie("hashId", form.value.hashId, 365);
+		}
+	} else {
+		form.value.hashId = generateBrowserFingerprint();
+		setCookie("hashId", form.value.hashId, 365); // 如果cookie不存在，也设置cookie
+	}
+}
+
+// 删除cookie的函数
+function deleteCookie(name: string) {
+	document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
+}
+
+
+
 </script>
 
 <style scoped lang="sass">
@@ -533,5 +710,59 @@ input[type="button"]:hover
     color: red
     font-weight: bold
     display: none
+	
+.radio-group 
+    display: flex
+    flex-direction: column /* ✅ 確保每個選項獨立一行 */
+    gap: 12px /* ✅ 設定選項之間的間距 */
+
+
+.radio-button-container 
+    display: flex
+    align-items: center
+    gap: 8px /* ✅ 確保 radio 與文字之間有間距 */
+    cursor: pointer
+
+
+.radio-button-container input[type="radio"] 
+    width: 16px
+    height: 16px
+    accent-color: #01814A /* ✅ 調整選中顏色 */
+
+
+.radio-label 
+    font-size: 16px
+
+
+/* 額外「其他」輸入框的樣式 */
+.other-input-container 
+    margin-left: 24px /* ✅ 讓額外輸入框與選項對齊 */
+
+
+.other-input-container input 
+    width: 100% /* ✅ 讓輸入框填滿可用空間 */
+    padding: 8px
+    font-size: 14px
+    border: 1px solid #ccc
+    border-radius: 4px
+
+button
+  width: 100%
+  padding: 12px
+  font-size: 16px
+  border: none
+  border-radius: 6px
+  cursor: pointer
+  transition: background-color 0.3s
+
+  &.enabled-btn
+    background-color: #01814A // ✅ 當可提交時變為綠色
+    color: white
+
+  &.disabled-btn
+    background-color: #ccc // ❌ 當不可提交時變為灰色
+    color: #666
+    cursor: not-allowed
+
 		
 </style>
