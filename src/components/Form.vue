@@ -11,7 +11,7 @@
     <!-- 使用條款 -->
     <div class="card">
       <h1>報名紀錄使用條款(請下滑至底部並勾選確認)</h1>
-      <div id="termsContainer" class="content" @scroll="handleScroll">
+      <div id="termsContainer" class="content">
         <p :ref="titleRefList.set">親愛的玩家：</p>
         <p>為了提升網站安全性和服務品質，我們將會收集 Cookie。</p>
         <b>相關資訊將會經加密演算法處理，避免產生可以直接識別您身份的個人資料。</b>
@@ -36,7 +36,6 @@
           </li>
         </ul>
 
-        <button id="scrollToBottomButton" @click="scrollToBottom">滑至底部</button>
       </div>
       <input type="checkbox" id="confirmCheckbox" v-model="termsAccepted" />
       <label for="confirmCheckbox">我已閱讀並同意上述條款</label>
@@ -113,17 +112,17 @@
 </template>
 
 <script setup lang="ts">
+import type { ComputedRef } from 'vue'
 import { ref, reactive, onMounted, computed } from "vue";
 import { useTemplateRefsList } from '@vueuse/core'
 import { map, pipe } from 'remeda'
-import { useRouter } from "vue-router";
 import { useElementVisibilityTime } from '../composables/use-element-visibility-time'
+import { useRouter } from 'vue-router'
 import ToggleProactive from '../toggle-proactive.vue' 
 
 const formTitle = ref("");
 const termsAccepted = ref(false);
 const isSubmitting = ref(false);
-const toggleValue = ref(false) // 預設為 false（關閉）
 
 const titleRefList = useTemplateRefsList<HTMLElement>()
 
@@ -155,14 +154,19 @@ const disabled = computed(() => readRate.value < 100)
 const value = ref(false)
 
 const form = reactive({
+  ruleCheck: "",
   name: "",
+  date: "",
   trpgexp: "",
   otherTrpg: "",
   commNum: "",
   commMail: "",
   regnum: "",
   regage: "",
+  trpgExp: "",
   memo: "",
+  userId: "",
+  hashId: "",
   howtoknow: [],
 });
 
@@ -194,7 +198,7 @@ const submitForm = async () => {
     return;
   }
 
-  if (!form.name || !form.commNum || !form.date) {
+  if (!form.name || !form.commNum || !form.date || !form.commMail) {
     alert("請填寫所有必填欄位");
     return;
   }
@@ -224,6 +228,7 @@ const submitForm = async () => {
 
     const result = await response.json();
     if (response.ok) {
+	  const router = useRouter()
       alert("提交成功！");
       router.push("/finish");
     } else {
