@@ -192,7 +192,7 @@ import ToggleProactive from '../toggle-proactive.vue'
 import CryptoJS from "crypto-js";
 
 const formTitle = ref("");
-const EventDate1 = ref(null);
+const EventDate1 = ref("");
 const SubmitwebAppUrl = ref("");
 const License = ref(false);
 
@@ -201,7 +201,7 @@ const termsAccepted = computed(() => {
 	return (
 		form.value.ruleCheck !== "" &&
 		form.value.name.trim() !== "" &&
-		form.value.date !== null &&
+		form.value.date !== "" &&
 		form.value.trpgexp !== "" &&
 		form.value.commNum.trim() !== "" &&
 		form.value.regnum !== "" &&
@@ -272,7 +272,7 @@ watch(readRate, (newRate) => {
 const form = ref({
   ruleCheck: "",
   name: "",
-  date: null,
+  date: "",
   trpgexp: "",
   otherTrpg: "",
   commNum: "",
@@ -334,7 +334,7 @@ const submitForm = async () => {
 	formData.append("userId", form.value.userId);
 	formData.append("hashId", form.value.hashId);
 
-	fetch(SubmitwebAppUrl.value+"dasdsasad", {
+	fetch(SubmitwebAppUrl.value, {
 	  method: "POST",
 	  headers: {
 		"Content-Type": "application/x-www-form-urlencoded",
@@ -350,8 +350,6 @@ const submitForm = async () => {
 	  })
 	  .catch(error => {
 		alert(error.message);
-		document.getElementById("submitForm").disabled = false;
-		document.getElementById("submitForm").value = "提交";
 	  });
 
 
