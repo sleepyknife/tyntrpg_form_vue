@@ -411,6 +411,8 @@ const props = withDefaults(defineProps<Props>(), {
   padColor: '#FFA5A5',
 })
 
+const randomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
+
 // #region Emits
 const emit = defineEmits<{
   'update:modelValue': [value: boolean];
@@ -512,10 +514,10 @@ const currentTrackClass = computed(() => {
   ]
 
   if (currentValue.value) {
-    result.push(props.trackActiveClass)
+    result.push('track-active')
   }
   else {
-    result.push(props.trackInactiveClass)
+    result.push('track-inactive')
   }
 
   return result
@@ -527,11 +529,11 @@ const currentThumbClass = computed(() => {
   ]
 
   if (currentValue.value) {
-    result.push(props.thumbActiveClass)
+    result.push('thumbbg')
     result.push('active')
   }
   else {
-    result.push(props.thumbInactiveClass)
+    result.push('thumbbg')
   }
 
   return result
@@ -609,18 +611,28 @@ function toKeyframe(
 }
 
 const toggle = debounce(() => {
+
   if (isPlaying.value)
     return
 
   if (props.disabled) {
     toggleCurrentValue()
     start()
+	// **隨機變更顏色**
+    furColor.value = randomColor()
+    padColor.value = randomColor()
     return
   }
 
   currentValue.value = !currentValue.value
   modelValue.value = currentValue.value
+  console.log('currentValue:', currentValue.value)
+
 }, 50)
+
+const furColor = ref(props.furColor)
+const padColor = ref(props.padColor)
+
 
 /** 延遲時間，會越按越短，更有不耐煩的感覺
  *
@@ -680,17 +692,23 @@ onBeforeMount(() => {
 <style scoped lang="sass">
 .toggle-proactive
   aspect-ratio: 1.8
+  width: v-bind('props.size') // 確保大小不超出
   height: v-bind('props.size')
+  position: relative
   .track
-    position: relative
-    width: 100%
+    position: absolute
+    top: 20%
+    width: 170%
     height: 100%
+    left: 50%
+    border-radius: 5rem
     transition-duration: 0.4s
   .thumb
     position: absolute
     height: 80%
     top: 10%
     left: 50%
+    border-radius: 8rem
     aspect-ratio: 1
     transition-duration: 0.4s
     transform: translateX(-100%)
@@ -699,12 +717,18 @@ onBeforeMount(() => {
       transform: translateX(0%)
   svg
     position: absolute
-    top: 0
-    left: 50%
+    top: 20%
+    left: -70%
     height: 100%
     aspect-ratio: 640 / 155
-    transform: translateX(-50%)
-
+    transform: translateX(0%)
+  .track-inactive 
+    background-color: v-bind('props.trackInactiveClass')
+  .track-active 
+    background-color: v-bind('props.trackActiveClass')
+  .thumbbg
+    background-color: v-bind('props.thumbClass')
+	
 .mirror
   scale: -1 1
   transform-origin: left center
