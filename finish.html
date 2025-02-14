@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>感謝您的報名</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .form-container {
+            background-color: white;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #444;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #357ae8;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>感謝您的填寫</h1>
+		<br>
+		感謝您的報名！d(`･∀･)b
+　　	<br>
+		您可在以下網頁中，確認自己的報名是否出現在列表上，以成功報名：<br>
+		<a href="https://reurl.cc/qDoy7p">https://reurl.cc/qDoy7p</a>
+		<br>
+		若報名狀況有所異動，將會額外通知，若無額外通知及為報名成功。
+		請活動當天下午一點三十開放進場，兩點關門，僅需攜帶報名費即可。
+		若有習慣的紙、筆與骰子，也可自行攜帶。
+		<br><br>
+		【當天活動場地資訊】
+		<br>《骰子貓商店》
+		<br>來店指南：<a href="https://goo.gl/Crhf3Q">https://goo.gl/Crhf3Q</a>
+		<br>（或Google Map搜尋「骰子貓商店」定位）
+		<br><br>
+		<br>取消報名、或其他疑問請聯絡桃園TRPG推廣會：
+		<br><a href="https://trpgintaoyuan.weebly.com/about.html">https://trpgintaoyuan.weebly.com/about.html</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var form = document.getElementById('myForm');
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                // 在此處理表單提交的邏輯
+                alert('表單已提交');
+                // 當提交成功時，您可以在此添加頁面跳轉邏輯
+            }
+        });
+    </script>
+</body>
+</html>
