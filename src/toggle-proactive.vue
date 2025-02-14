@@ -357,6 +357,7 @@
     <input
       type="checkbox"
       class="hidden"
+	  style="display: none"
       @click="toggle"
     >
   </div>
@@ -697,7 +698,7 @@ onBeforeMount(() => {
   position: relative
   .track
     position: absolute
-    top: 20%
+    top: 0%
     width: 170%
     height: 100%
     left: 50%
@@ -717,7 +718,7 @@ onBeforeMount(() => {
       transform: translateX(0%)
   svg
     position: absolute
-    top: 20%
+    top: 0%
     left: -70%
     height: 100%
     aspect-ratio: 640 / 155

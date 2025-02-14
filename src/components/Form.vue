@@ -2,6 +2,10 @@
   <div class="container">
     <!-- Header -->
     <div class="card-header">{{ formTitle }}</div>
+	
+	<div class="card" style="text-align:left;">
+    *表示必填問題
+    </div>
 
     <!-- 活動圖片 -->
     <div class="card" v-for="(img, index) in eventImages" :key="index">
@@ -10,7 +14,9 @@
 
     <!-- 使用條款 -->
     <div class="card">
-      <h1>報名紀錄使用條款(請下滑至底部並勾選確認)</h1>
+      <h2>
+	  報名紀錄使用條款(請下滑至底部並勾選確認)
+	  </h2>
       <div id="termsContainer" class="content">
         <p :ref="titleRefList.set">親愛的玩家：</p>
         <p>為了提升網站安全性和服務品質，我們將會收集 Cookie。</p>
@@ -32,32 +38,52 @@
           <li>聯繫 Icy: icysdungeon@gmail.com</li>
           <li>
             桃推相關粉專：
-            <a href="https://linktr.ee/tyntrpg">https://linktr.ee/tyntrpg</a>
+            <a href="https://linktr.ee/tyntrpg" :ref="titleRefList.set">https://linktr.ee/tyntrpg</a>
           </li>
         </ul>
 
       </div>
-      <input type="checkbox" id="confirmCheckbox" v-model="termsAccepted" />
-      <label for="confirmCheckbox">我已閱讀並同意上述條款</label>
-    </div>
-	
-	<!-- Cat hand -->
-	<div class="card">
+	  <p>閱讀率：{{ readRate.toFixed(1) }}%</p>
+	  <h2>我已詳閱上述須知</h2>
 			<toggle-proactive
+			  class="hand"
+			  id="confirmCheckbox"
 			  v-model="value"
 			  :disabled
-			  size="2rem"
+			  size="4rem"
 			  fur-color="#DFC57B"
 			  pad-color="#FFF"
 			  trackInactiveClass="#DFDFDF"
 			  trackActiveClass="green"
 			  thumbClass="#FFF"
 			/>
-			閱讀率：{{ readRate.toFixed(1) }}%
-	</div>
+    </div>
 
+	<!-- robot -->
+	<div class="card">
+		推廣會小精靈，加入並訂閱通知。成功報名小精靈會有通知提醒你唷
+		<br>(<ゝω・) 綺羅星☆
+		<img src="../../img/bar.jpg" alt="bot" class="custom-img">
+	</div>
     <!-- 報名表單 -->
     <form @submit.prevent="submitForm">
+	  <div class="card">
+		我瞭解並同意以上注意事項（強調：報名失敗才會有專人通知，無通知代表報名自動成功）<br><br>
+		<label class="radio-button-container">是
+			<input type="radio" name="ruleCheck" value="是">
+			<span class="checkmark"></span>
+		</label>
+	  </div>
+	
+	  <div class="card">
+			報名場次（若要報名2場請填2次單）（強調：無特別通知代表報名成功，當天請準時來參加活動。）<br><br>
+			<div id="warning">註：目前報名人數較多，可能會被排為候補。<br><br></div>
+			<label class="radio-button-container" id="eventDateLabel">
+				<input type="radio" name="date" id="eventDateRadio">
+				<span class="checkmark"></span>
+			</label>
+	  </div>
+	
       <div class="card">
         <label for="name">報名ID(活動當天以此簽到)*</label>
         <input type="text" id="name" v-model="form.name" placeholder="您的姓名" required />
@@ -65,9 +91,10 @@
 
       <div class="card">
         <label>請問是否有玩過TRPG?*</label>
+		<br>
         <div v-for="option in trpgOptions" :key="option.value" class="radio-button-container">
           <input type="radio" v-model="form.trpgexp" :value="option.value" />
-          <span class="checkmark"></span> {{ option.label }}
+          <span class="checkmark"></span> <span v-html="option.label"></span>
         </div>
         <input type="text" v-model="form.otherTrpg" v-if="form.trpgexp === '其他'" placeholder="請說明" />
       </div>
@@ -103,6 +130,37 @@
         <label for="memo">備註欄（多人報名請註明新手人數）</label>
         <input type="text" id="memo" v-model="form.memo" placeholder="您的回答" />
       </div>
+	  
+	  <div class="card">
+		<label>請問您是如何得知本活動的?</label>
+		<br><br>
+		<div class="custom-checkbox">
+			<input type="checkbox" id="howtoknow1" name="howtoknow" value="Discord" style="display: none;">
+			<label for="howtoknow1">Discord</label><br><br>
+			<input type="checkbox" id="howtoknow2" name="howtoknow" value="FB" style="display: none;">
+			<label for="howtoknow2">FB</label><br><br>
+			<input type="checkbox" id="howtoknow3" name="howtoknow" value="IG" style="display: none;">
+			<label for="howtoknow3">IG</label><br><br>
+			<input type="checkbox" id="howtoknow4" name="howtoknow" value="Line" style="display: none;">
+			<label for="howtoknow4">Line</label><br><br>
+			<input type="checkbox" id="howtoknow5" name="howtoknow" value="桃推網站" style="display: none;">
+			<label for="howtoknow5">桃推網站</label><br><br>
+			<input type="checkbox" id="howtoknow6" name="howtoknow" value="噗浪" style="display: none;">
+			<label for="howtoknow6">噗浪</label><br><br>
+			<input type="checkbox" id="howtoknow7" name="howtoknow" value="朋友介紹" style="display: none;">
+			<label for="howtoknow7">朋友介紹</label>
+		</div>
+	  </div>
+	  
+	  <div class="card">
+            <label>活動場地資訊</label>
+			<br><br>
+            骰子貓商店：<a href="https://goo.gl/maps/gvSftUF7p4fGNvc3A">https://goo.gl/maps/gvSftUF7p4fGNvc3A</a>
+			<br>來店指南：<a href="https://goo.gl/Crhf3Q">https://goo.gl/Crhf3Q</a>
+			<br>(或Google Map搜尋”骰子貓商店”定位)
+
+			<br>聯絡信箱：icysdungeon@gmail.com (主辦：Icy)
+        </div>
 
       <div class="card">
         <button type="submit" :disabled="!termsAccepted">提交</button>
@@ -175,6 +233,7 @@ const eventImages = [
   { src: "img/new_time.png", alt: "活動時間" },
   { src: "img/01215.001.jpeg", alt: "活動分配" },
   { src: "img/t2.004.jpeg", alt: "人滿須知" },
+  { src: "img/bar.jpg", alt: "機器人"},
 ];
 
 const trpgOptions = [
@@ -253,45 +312,44 @@ onMounted(() => {
 
 <style scoped lang="sass">
 // 這裡加入你原本的 CSS
+  div#app
+    font-family: Arial, sans-serif;
+    background-color: #DBB3B3;
+    padding: 20px;
 
+@media screen and (max-width: 600px)
   .container
     width: 100%
-    max-width: 1200px
-    margin: 0 auto
-
 
   .card
-    position: relative
     max-width: 100%
-    min-height: 100px // 確保內部元素有足夠的空間
-    margin: 0 auto
+    margin: 0 auto // 這會將卡片置中
     background: #fff
     margin-bottom: 20px
     padding: 20px
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2)
     border-radius: 8px
-
-
-  .card-header
-    max-width: 100%
-    margin: 0 auto // 這會將卡片置中
-    background: #01814A
-    margin-bottom: 20px
-    padding: 20px
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
-    border-radius: 8px
     overflow: hidden // 確保子元素不超出卡片邊界
-    color: #000
-    font-size: 24px
-    font-weight: bold
+
+    &-header
+      max-width: 100%
+      margin: 0 auto
+      background: #01814A
+      margin-bottom: 20px
+      padding: 20px
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
+      border-radius: 8px
+      overflow: hidden
+      color: #FFF
+      font-size: 24px
+      font-weight: bold
+  .hand
+    margin-left: 25%
+
 
 // 大於 600px 寬的設備
 @media screen and (min-width: 601px)
   .card
-    display: flex
-    justify-content: center /* 水平置中 */
-    align-items: center /* 垂直置中 */
-
     position: relative
     max-width: 80%
     margin: 0 auto
@@ -314,6 +372,8 @@ onMounted(() => {
     color: #FFF
     font-size: 24px
     font-weight: bold
+  .hand
+    margin-left: 40%
 
 body
   font-family: Arial, sans-serif
@@ -418,6 +478,8 @@ input[type="button"]:hover
   border: 1px solid #ccc
   padding: 10px
   position: relative
+  text-align: left
+  font-size: 20px
 
 #scrollToBottomButton
   position: sticky
@@ -444,8 +506,16 @@ input[type="button"]:hover
 	
 .hidden 
     display: none
-        
-		
+	
+.custom-checkbox 
+    display: flex
+    flex-direction: column
+    align-items: flex-start
+
+.custom-checkbox label 
+    display: inline-block
+    cursor: pointer
+
 #notifyButton 
     background-color: #4CAF50 /* Green */
     border: none

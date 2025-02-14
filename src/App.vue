@@ -5,16 +5,19 @@ import Form from './components/Form.vue';
 
 <template>
   <div>
-    <Header />
     <main>
       <Form />
     </main>
   </div>
 </template>
 
-<style scoped>
+<style>
 main {
   padding: 20px;
+  background-color: #DBB3B3;
+}
+
+body {
   background-color: #DBB3B3;
 }
 </style>
