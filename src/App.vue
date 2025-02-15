@@ -17,7 +17,7 @@ onMounted(() => {
 async function loadEnvData() {
   try {
     const baseUrl = import.meta.env.BASE_URL; // 取得專案的根路徑
-    const response = await fetch(`${baseUrl}env.json`); // ✅ 正確取得 env.json
+    const response = await fetch(`${baseUrl}/public/env.json`); // ✅ 正確取得 env.json
     if (!response.ok) {
       throw new Error("Failed to fetch env.json");
     }
