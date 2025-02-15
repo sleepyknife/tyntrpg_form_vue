@@ -35,7 +35,7 @@ async function loadEnvData() {
 <template>
   <div>
     <main>
-	  <div v-if="Phase === 'Open'"><Form /></div>
+	  <div v-if="Phase === 'Form'"><Form /></div>
 	  <div v-else-if="Phase === 'Pending'"><Pending /></div>
 	  <div v-else-if="Phase === 'Close'"><Close /></div>
     </main>
