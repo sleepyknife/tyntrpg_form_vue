@@ -1,0 +1,28 @@
+name: Update JSON File
+
+on:
+  repository_dispatch:
+    types: [update-json]
+
+jobs:
+  update-json:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Update JSON
+        run: |
+          # Read the JSON file and update the Phase key
+          # 使用 --indent 参数指定缩进级别
+          jq '.Phase = "${{ github.event.client_payload.phase }}"' env.json --indent 4 > temp.json
+          mv temp.json env.json
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name 'sleepyknife'
+          git config --global user.email 'sleepycat7912@gmail.com'
+          git add env.json
+          git commit -m "Update Phase in JSON file"
+          # Use the PAT for authentication
+          git push https://${{ secrets.MY_GITHUB_TOKEN }}@github.com/sleepyknife/tyntrpg_form.git
