@@ -16,13 +16,14 @@ onMounted(() => {
 
 async function loadEnvData() {
   try {
-    const baseUrl = import.meta.env.BASE_URL; // 取得專案的根路徑
-    const response = await fetch(`${baseUrl}env.json`); // ✅ 正確取得 env.json
-    if (!response.ok) {
-      throw new Error("Failed to fetch env.json");
-    }
-    const data = await response.json();
-    Phase.value = data.Phase; // Get phase
+	  fetch(`${import.meta.env.BASE_URL}env.json`)
+		  .then(response => response.json())
+		  .then(data => {
+			console.log('📦 JSON Data:', data);
+			Phase.value = data.Phase; // Get phase
+		  })
+		  .catch(error => console.error('❌ Failed to load env.json:', error));
+
 	
 	console.log("Phase after fetch:", Phase.value); // ✅ 確保在資料加載後印出
   } catch (error) {
