@@ -1,32 +1,42 @@
-name: Update JSON File
+name: Update JSON File on gh-pages
 
 on:
   repository_dispatch:
     types: [update-json]
 
 jobs:
-  update-json:
+  update-gh-pages:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
 
-      - name: Update JSON
+    steps:
+      # 1️⃣ 檢出程式碼 (預設為 main/master)
+      - name: Checkout Master Branch
+        uses: actions/checkout@v4
+
+      # 2️⃣ 切換到 gh-pages 分支
+      - name: Checkout gh-pages Branch
         run: |
-          if [ -f ./public/env.json ]; then
+          git fetch origin gh-pages:gh-pages
+          git checkout gh-pages
+
+      # 3️⃣ 更新 JSON 檔案
+      - name: Update env.json in gh-pages
+        run: |
+          if [ -f ./env.json ] || [ -f ./public/env.json ]; then
             PHASE="${{ github.event.client_payload.phase }}"
-            jq --arg phase "$PHASE" '.Phase = $phase' ./public/env.json > ./public/temp.json && mv ./public/temp.json ./public/env.json
+            jq --arg phase "$PHASE" '.Phase = $phase' ./public/env.json > ./public/temp.json
+            mv ./public/temp.json ./public/env.json
+            echo "✅ env.json updated successfully."
           else
             echo "⚠️ Error: env.json not found in ./public"
             exit 1
           fi
 
-
-      - name: Commit and Push
+      # 4️⃣ 提交更改
+      - name: Commit and Push Changes to gh-pages
         run: |
-          git config --global user.name 'sleepyknife'
-          git config --global user.email 'sleepycat7912@gmail.com'
+          git config --global user.name "sleepyknife"
+          git config --global user.email "sleepycat7912@gmail.com"
           git add ./public/env.json
           git commit -m "Update Phase to: ${{ github.event.client_payload.phase }}" || echo "🟡 No changes to commit"
-          # Use the PAT for authentication
-          git push https://${{ secrets.MY_GITHUB_TOKEN }}@github.com/sleepyknife/tyntrpg_form_vue.git
+          git push https://x-access-token:${{ secrets.MY_GITHUB_TOKEN }}@github.com/sleepyknife/tyntrpg_form.git gh-pages
