@@ -13,10 +13,14 @@ jobs:
 
       - name: Update JSON
         run: |
-          # Read the JSON file and update the Phase key
-          # 使用 --indent 参数指定缩进级别
-          jq '.Phase = "${{ github.event.client_payload.phase }}"' env.json --indent 4 > temp.json
-          mv temp.json env.json
+          if [ -f ./public/env.json ]; then
+            PHASE="${{ github.event.client_payload.phase }}"
+            jq --arg phase "$PHASE" '.Phase = $phase' ./public/env.json > ./public/temp.json && mv ./public/temp.json ./public/env.json
+          else
+            echo "⚠️ Error: env.json not found in ./public"
+            exit 1
+          fi
+
 
       - name: Commit and Push
         run: |
