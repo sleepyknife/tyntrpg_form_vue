@@ -26,7 +26,7 @@ jobs:
         run: |
           git config --global user.name 'sleepyknife'
           git config --global user.email 'sleepycat7912@gmail.com'
-          git add env.json
-          git commit -m "Update Phase in JSON file"
+          git add ./public/env.json
+          git commit -m "Update Phase to: ${{ github.event.client_payload.phase }}" || echo "🟡 No changes to commit"
           # Use the PAT for authentication
-          git push https://${{ secrets.MY_GITHUB_TOKEN }}@github.com/sleepyknife/tyntrpg_form.git
+          git push https://${{ secrets.MY_GITHUB_TOKEN }}@github.com/sleepyknife/tyntrpg_form_vue.git
