@@ -2,7 +2,9 @@
   <div class="container">
     
 	<div class="form-container">
-		
+		<wrapper-cat-ear
+			  main-color="#03a1fc"
+			  inner-color="#8f003e" >
 			<h1>{{formTitle}}</h1>
 			<br>
 			<br>{{formTitle}}的活動尚未開始報名，不好意思，麻煩稍待相關資訊公布。
@@ -14,14 +16,14 @@
 			<br>--
 			<!-- <br>活動細節預計會在前一個月15日前後公布，詳細仍請關注相關連結 -->
 			<br>桃推相關資訊連結：<a href="https://linktr.ee/tyntrpg">https://linktr.ee/tyntrpg</a>
-
-			
+		</wrapper-cat-ear>	
 	</div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import WrapperCatEar from '../wrapper-cat-ear.vue'
 
 const formTitle = ref("");
 const EventDate1 = ref("");
@@ -61,9 +63,12 @@ async function loadEnvData() {
 
 @media screen and (max-width: 600px)
   .container
+    position: relative
     width: 100%
+    z-index: 1
 
   .card
+    position: relative
     max-width: 100%
     margin: 0 auto // 這會將卡片置中
     background: #fff
@@ -91,6 +96,11 @@ async function loadEnvData() {
 
 // 大於 600px 寬的設備
 @media screen and (min-width: 601px)
+  .container
+    position: relative
+    width: 100%
+    z-index: 1
+	
   .card
     position: relative
     max-width: 80%
