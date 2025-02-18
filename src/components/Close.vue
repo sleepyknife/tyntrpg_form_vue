@@ -1,27 +1,31 @@
 <template>
   <div class="container">
-    
-	<div class="form-container">
-		
-			<h1>{{formTitle}}</h1>
-			<br>
-			<br>{{formTitle}}活動已額滿，報名截止，不好意思。可現場排隊候補。
-			<br>敬請關注桃園TRPG推廣活動相關社群，期待次月活動！
-			<br>
-			<br>查看報名成功列表：<a href="https://tinyurl.com/yc664u7y">https://tinyurl.com/yc664u7y</a>
-			<br>
-			<br>--
-			<br>預計下個月的活動時間為：{{NextDate}}
-			<!-- <br>相關活動細節預計會在前一個月15日前後公布 -->
-			<br>桃推相關資訊連結：<a href="https://linktr.ee/tyntrpg">https://linktr.ee/tyntrpg</a>
+		<div class="form-container">
+			<wrapper-cat-ear
+			  main-color="#3b3b3b"
+			  inner-color="#ffc2b8"
+			>
+				<h1>{{formTitle}}</h1>
+				<br>
+				<br>{{formTitle}}活動已額滿，報名截止，不好意思。可現場排隊候補。
+				<br>敬請關注桃園TRPG推廣活動相關社群，期待次月活動！
+				<br>
+				<br>查看報名成功列表：<a href="https://tinyurl.com/yc664u7y">https://tinyurl.com/yc664u7y</a>
+				<br>
+				<br>--
+				<br>預計下個月的活動時間為：{{NextDate}}
+				<!-- <br>相關活動細節預計會在前一個月15日前後公布 -->
+				<br>桃推相關資訊連結：<a href="https://linktr.ee/tyntrpg">https://linktr.ee/tyntrpg</a>
 
-			
+			</wrapper-cat-ear>	
 		</div>
+	
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import WrapperCatEar from '../wrapper-cat-ear.vue'
 
 const formTitle = ref("");
 const NextDate = ref("");
@@ -61,9 +65,12 @@ async function loadEnvData() {
 
 @media screen and (max-width: 600px)
   .container
+    position: relative
     width: 100%
+    z-index: 1
 
   .card
+    position: relative
     max-width: 100%
     margin: 0 auto // 這會將卡片置中
     background: #fff
@@ -91,6 +98,11 @@ async function loadEnvData() {
 
 // 大於 600px 寬的設備
 @media screen and (min-width: 601px)
+  .container
+    position: relative
+    width: 100%
+    z-index: 1
+	
   .card
     position: relative
     max-width: 80%
