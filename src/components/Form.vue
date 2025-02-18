@@ -1,7 +1,16 @@
 <template>
   <div class="container">
     <!-- Header -->
-    <div class="card-header">{{ formTitle }}</div>
+    <div  id="head-ear" class="card-header">
+		<wrapper-cat-ear
+			  main-color="#3b3b3b"
+			  inner-color="#ffc2b8"
+			>
+			<h2>
+				{{ formTitle }}
+			</h2>
+		</wrapper-cat-ear>
+	</div>
 	
 	<div class="card" style="text-align:left;">
     *表示必填問題
@@ -14,6 +23,10 @@
 
     <!-- 使用條款 -->
     <div class="card">
+	  <wrapper-cat-ear
+			  main-color="#3b3b3b"
+			  inner-color="#ffc2b8"
+			>
       <h2>
 	  報名紀錄使用條款(請蒐集貓貓並勾選確認)
 	  </h2>
@@ -57,6 +70,7 @@
 			  trackActiveClass="green"
 			  thumbClass="#FFF"
 			/>
+		</wrapper-cat-ear>	
     </div>
 
     <!-- 報名表單 -->
@@ -190,6 +204,7 @@ import { map, pipe } from 'remeda'
 import { useElementVisibilityTime } from '../composables/use-element-visibility-time'
 import ToggleProactive from '../toggle-proactive.vue' 
 import CryptoJS from "crypto-js";
+import WrapperCatEar from '../wrapper-cat-ear.vue'
 
 const formTitle = ref("");
 const EventDate1 = ref("");
@@ -494,9 +509,12 @@ function deleteCookie(name: string) {
 
 @media screen and (max-width: 600px)
   .container
+    position: relative
     width: 100%
+    z-index: 1
 
   .card
+    position: relative
     max-width: 100%
     margin: 0 auto // 這會將卡片置中
     background: #fff
@@ -504,7 +522,6 @@ function deleteCookie(name: string) {
     padding: 20px
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2)
     border-radius: 8px
-    overflow: hidden // 確保子元素不超出卡片邊界
 
     &-header
       max-width: 100%
@@ -524,6 +541,11 @@ function deleteCookie(name: string) {
 
 // 大於 600px 寬的設備
 @media screen and (min-width: 601px)
+  .container
+    position: relative
+    width: 100%
+    z-index: 1
+	
   .card
     position: relative
     max-width: 80%
@@ -533,17 +555,16 @@ function deleteCookie(name: string) {
     padding: 20px
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
     border-radius: 8px
-    overflow: hidden
 
   .card-header
-    max-width: 60%
+    position: relative
+    max-width: 70%
     margin: 0 auto
     background: #01814A
     margin-bottom: 20px
     padding: 20px
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2)
     border-radius: 8px
-    overflow: hidden
     color: #FFF
     font-size: 24px
     font-weight: bold
