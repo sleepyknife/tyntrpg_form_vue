@@ -47,6 +47,7 @@ async function loadEnvData() {
 main {
   padding: 20px;
   background-color: #DBB3B3;
+  color: black;
 }
 
 body {
