@@ -26,7 +26,7 @@
 import type { CSSProperties } from 'vue'
 import type { ActionName } from '.'
 import { throttleFilter, useMouseInElement } from '@vueuse/core'
-import { computed, ref, nextTick } from 'vue'
+import { computed, ref } from 'vue'
 import EarLeft from './cat-ear-left.vue'
 import EarRight from './cat-ear-right.vue'
 
@@ -47,9 +47,9 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 // #region Emits
-const emit = defineEmits<{
-  'update:action': [value: Props['action']];
-}>()
+// const emit = defineEmits<{
+  // 'update:action': [value: Props['action']];
+// }>()
 // #endregion Emits
 
 const wrapperRef = ref<HTMLDivElement>()
