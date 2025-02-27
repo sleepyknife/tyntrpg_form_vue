@@ -7,8 +7,8 @@
 			  inner-color="#8f003e" >
 			<h1>{{formTitle}}</h1>
 			<br>
-			<br>{{formTitle}}的活動尚未開始報名，不好意思，麻煩稍待相關資訊公布。
-			<br>{{EventDate1}}
+			<br>本月活動尚未開始報名，不好意思，麻煩稍待相關資訊公布。
+			<br>本月活動日期：{{EventDate1}}
 			<br>敬請關注桃園TRPG推廣活動相關社群，期待您的參加！
 			<br>
 			<br>
