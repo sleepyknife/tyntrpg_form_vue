@@ -8,10 +8,44 @@ import { ref, onMounted } from "vue";
 
 const Phase = ref("");
 
+// 🔥 JOJO 貓貓警告 Console 函數
+function showJojoCatConsole() {
+  setTimeout(() => {
+    const jojoCat = `
+         ／＞　 フ
+        | 　_　_| ノ╮      
+     ／\` ミ＿xノ ／         
+    /　　　　 |ノ   「你…為什麼打開了 Console？」
+   /　 ヽ　　 ﾉ       「明明知道那裡是騙人的陷阱…」
+│　　|　|　|       
+／￣|　　 |　|　|     
+(￣ヽ＿_ヽ_)__)   
+＼二)     ゴゴゴゴゴ…`;
+
+    const phrase1 = '「你…並沒有選擇逃跑…」';
+    const phrase2 = '「居然…不是後退，而是朝我走來嗎？」';
+    const phrase3 = '「開發者的領域，只屬於有覺悟之人。」';
+    const standName = '★ 替身名：NEKODORA（喵喵怒吼）';
+
+    console.log('%c⚠️ 住手，開發者！', 'font-size: 40px; color: #b300b3; font-weight: bold;');
+    console.log('%c你正對上了不該接觸的替身。', 'font-size: 18px; color: #ff66cc; font-style: italic;');
+    console.log('%c這裡不是輸入神祕程式碼的地方，這是命運的戰場。', 'font-size: 14px; color: orange;');
+    console.log('%c' + phrase1, 'color: #999; font-size: 14px;');
+    console.log('%c' + phrase2, 'color: #fff; font-size: 16px; font-weight: bold;');
+    console.log('%c' + phrase3, 'color: #ff9999; font-size: 14px; font-style: italic;');
+    console.log('%c' + standName, 'color: cyan; font-size: 13px;');
+    console.log('%c參考：https://trpgintaoyuan.weebly.com\n', 'font-size: 12px; color: blue; text-decoration: underline;');
+    console.log('%c' + jojoCat, 'font-family: monospace; color: #800080; font-size: 13px; font-weight: bold;');
+  }, 1000);
+}
+
 onMounted(() => {
 
   // 讀取 env.json（單獨的 async 函數）
   loadEnvData();
+  
+  // 顯示 JOJO 貓貓 Console 警告
+  showJojoCatConsole();
 })
 
 async function loadEnvData() {
@@ -30,6 +64,8 @@ async function loadEnvData() {
     console.error("Error loading env.json:", error);
   }
 }
+
+
 
 </script>
 
