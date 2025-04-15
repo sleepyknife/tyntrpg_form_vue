@@ -11,17 +11,19 @@ const Phase = ref("");
 // 🔥 JOJO 貓貓警告 Console 函數
 function showJojoCatConsole() {
   setTimeout(() => {
-    const jojoCat = `
+	  
+	const asciiCat = String.raw`
  ,_     _
- |\\_,-~/
- / _  _ |    ,--.     「你…為什麼打開了 Console？」
-(  @  @ )   / ,-'     「明明知道那裡是騙人的陷阱…」
+ |\_,-~/
+ / _  _ |    ,--.    「你…為什麼打開了 Console？」
+(  @  @ )   / ,-'    「明明知道那裡是騙人的陷阱…」
  \  _T_/-._( (
  /         `. \
 |         _  \ |
  \ \ ,  /      |
   || |-_\__   /
- ((_/`(____,-'        ゴゴゴゴゴ…`;
+ ((_/`(____,-'       ゴゴゴゴゴ…`;
+
 
     const phrase1 = '「你…並沒有選擇逃跑…」';
     const phrase2 = '「居然…不是後退，而是朝我走來嗎？」';
@@ -36,7 +38,7 @@ function showJojoCatConsole() {
     console.log('%c' + phrase3, 'color: #ff9999; font-size: 14px; font-style: italic;');
     console.log('%c' + standName, 'color: cyan; font-size: 13px;');
     console.log('%c參考：https://trpgintaoyuan.weebly.com\n', 'font-size: 12px; color: blue; text-decoration: underline;');
-    console.log('%c' + jojoCat, 'font-family: monospace; color: #993299; font-size: 13px; font-weight: bold;');
+    console.log('%c' + asciiCat, 'font-family: monospace; color: #993299; font-size: 13px; font-weight: bold;');
   }, 1000);
 }
 
