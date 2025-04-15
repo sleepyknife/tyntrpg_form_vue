@@ -12,20 +12,21 @@ const Phase = ref("");
 function showJojoCatConsole() {
   setTimeout(() => {
     const jojoCat = `
-         ／＞　 フ
-        | 　_　_| ノ╮      
-     ／\` ミ＿xノ ／         
-    /　　　　 |ノ   「你…為什麼打開了 Console？」
-   /　 ヽ　　 ﾉ       「明明知道那裡是騙人的陷阱…」
-│　　|　|　|       
-／￣|　　 |　|　|     
-(￣ヽ＿_ヽ_)__)   
-＼二)     ゴゴゴゴゴ…`;
+ ,_     _
+ |\\_,-~/
+ / _  _ |    ,--.     「你…為什麼打開了 Console？」
+(  @  @ )   / ,-'     「明明知道那裡是騙人的陷阱…」
+ \  _T_/-._( (
+ /         `. \
+|         _  \ |
+ \ \ ,  /      |
+  || |-_\__   /
+ ((_/`(____,-'        ゴゴゴゴゴ…`;
 
     const phrase1 = '「你…並沒有選擇逃跑…」';
     const phrase2 = '「居然…不是後退，而是朝我走來嗎？」';
     const phrase3 = '「開發者的領域，只屬於有覺悟之人。」';
-    const standName = '★ 替身名：NEKODORA（喵喵怒吼）';
+    const standName = '★ 替身名：FURTISSIMO（毛奏極限）';
 
     console.log('%c⚠️ 住手，開發者！', 'font-size: 40px; color: #b300b3; font-weight: bold;');
     console.log('%c你正對上了不該接觸的替身。', 'font-size: 18px; color: #ff66cc; font-style: italic;');
@@ -35,7 +36,7 @@ function showJojoCatConsole() {
     console.log('%c' + phrase3, 'color: #ff9999; font-size: 14px; font-style: italic;');
     console.log('%c' + standName, 'color: cyan; font-size: 13px;');
     console.log('%c參考：https://trpgintaoyuan.weebly.com\n', 'font-size: 12px; color: blue; text-decoration: underline;');
-    console.log('%c' + jojoCat, 'font-family: monospace; color: #800080; font-size: 13px; font-weight: bold;');
+    console.log('%c' + jojoCat, 'font-family: monospace; color: #993299; font-size: 13px; font-weight: bold;');
   }, 1000);
 }
 
