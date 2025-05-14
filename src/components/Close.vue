@@ -25,8 +25,38 @@
 							</div>
 					</card-futuristic>
 				</div>
+				
+				<div class="flex flex-wrap items-center justify-center gap-10">
+				  <card-futuristic
+					v-for="item, i in list"
+					:key="i"
+					v-on-click-outside="() => item.selected = false"
+					v-bind="item"
+					class="font-orbitron"
+					@click="item.selected = true"
+				  >
+					<div class="flex flex-col">
+					  <div
+						v-if="item.title"
+						:class="item.titleClass"
+					  >
+						{{ item.title }}
+					  </div>
+
+					  <div
+						v-if="item.text"
+						:class="item.textClass"
+					  >
+						{{ item.text }}
+					  </div>
+					</div>
+				  </card-futuristic>
+				</div>
 		</div>
   </div>
+  
+  
+
 </template>
 
 <script setup lang="ts">

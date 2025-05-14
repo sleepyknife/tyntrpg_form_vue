@@ -12,8 +12,7 @@
     "skipLibCheck": true,
 	"target": "ESNext",               // ✅ 建議設為 ESNext
     "lib": ["esnext", "dom"],          // ✅ 支援瀏覽器和 Node 環境
-	"module": "ESNext", // ✅ 使用 ES 模組
-	"esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+	"module": "ESNext" // ✅ 使用 ES 模組
+  
   }
 }
