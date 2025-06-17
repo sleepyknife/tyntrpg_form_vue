@@ -48,7 +48,7 @@
 
         <p>聯繫方式：</p>
         <ul>
-          <li>聯繫 Icy: icysdungeon@gmail.com</li>
+          <li>聯繫 盧靜: rutkking@gmail.com</li>
           <li>
             🐈桃推相關粉專🐈：
             <a href="https://linktr.ee/tyntrpg" :ref="titleRefList.set">https://linktr.ee/tyntrpg</a>
