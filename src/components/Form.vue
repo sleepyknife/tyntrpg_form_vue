@@ -182,7 +182,7 @@
 			<br>來店指南：<a href="https://goo.gl/Crhf3Q">https://goo.gl/Crhf3Q</a>
 			<br>(或Google Map搜尋”骰子貓商店”定位)
 
-			<br>聯絡信箱：icysdungeon@gmail.com (主辦：Icy)
+			<br>聯絡信箱： rutkking@gmail.com (主辦：盧靜)
         </div>
 
       <div class="card">
