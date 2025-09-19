@@ -1,7 +1,7 @@
 <template>
   <canvas
     ref="canvasRef"
-    class="pointer-events-none absolute left-0 top-0 w-full h-full"
+    class="pointer-events-none fixed left-0 top-0 z-[99999] h-screen w-screen"
   />
 
   <shot-vector-control
