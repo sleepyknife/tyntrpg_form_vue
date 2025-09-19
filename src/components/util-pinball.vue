@@ -200,10 +200,14 @@ onMounted(() => {
     return
   }
 
-  // 把球放到畫面中間上方
+  // Randomize initial position
+  const padding = 50; // 50px padding from edges
+  const randomX = padding + Math.random() * (canvasBounding.width - padding * 2);
+  const randomY = padding + Math.random() * (canvasBounding.height - padding * 2);
+
   Matter.Body.setPosition(ball, {
-    x: canvasBounding.width / 2,
-    y: canvasBounding.height / 10,
+    x: randomX,
+    y: randomY,
   })
 
   // 處理各個 mech 邏輯
