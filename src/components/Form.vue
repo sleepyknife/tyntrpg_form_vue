@@ -56,16 +56,27 @@
         </ul>
 
       </div>
-	  <p>閱讀率：{{ readRate.toFixed(1) }}%</p>
-	  <h2>我已詳閱上述須知</h2>
-			<toggle-proactive
-			  class="hand"
-			  id="confirmCheckbox"
-			  v-model="License"
-			  :disabled
-			  size="4rem"
-			  fur-color="#DFC57B"
-			  pad-color="#FFF"
+      <section class="pinball-section">
+        <h3>貓貓彈珠台任務</h3>
+        <p :class="['pinball-status', { completed: pinballCleared }]">
+          {{ pinballStatusMessage }}
+        </p>
+        <PinballGame
+          class="pinball-widget"
+          @update="handlePinballUpdate"
+          @completed="handlePinballCompleted"
+        />
+      </section>
+          <p>閱讀率：{{ readRate.toFixed(1) }}%</p>
+          <h2>我已詳閱上述須知</h2>
+                        <toggle-proactive
+                          class="hand"
+                          id="confirmCheckbox"
+                          v-model="License"
+                          :disabled="!pinballCleared"
+                          size="4rem"
+                          fur-color="#DFC57B"
+                          pad-color="#FFF"
 			  trackInactiveClass="#DFDFDF"
 			  trackActiveClass="green"
 			  thumbClass="#FFF"
@@ -202,26 +213,42 @@ import { ref, onMounted, computed, watch } from "vue";
 import { useTemplateRefsList } from '@vueuse/core'
 import { map, pipe } from 'remeda'
 import { useElementVisibilityTime } from '../composables/use-element-visibility-time'
-import ToggleProactive from '../toggle-proactive.vue' 
+import ToggleProactive from '../toggle-proactive.vue'
 import CryptoJS from "crypto-js";
 import WrapperCatEar from '../wrapper-cat-ear.vue'
+import PinballGame from './PinballGame.vue'
 
 const formTitle = ref("");
 const EventDate1 = ref("");
 const SubmitwebAppUrl = ref("");
 const License = ref(false);
+const pinballProgress = ref({ collected: 0, total: 0, score: 0 });
+const pinballCleared = ref(false);
+
+const pinballStatusMessage = computed(() => {
+  if (pinballCleared.value) {
+    return `貓貓蒐集完成！目前分數 ${pinballProgress.value.score}，記得勾選確認。`;
+  }
+
+  if (!pinballProgress.value.total) {
+    return '請在下方的彈珠台蒐集所有貓貓後，再進行確認。';
+  }
+
+  return `已蒐集 ${pinballProgress.value.collected} / ${pinballProgress.value.total} 隻貓貓，繼續努力！目前分數 ${pinballProgress.value.score}`;
+});
 
 
 const termsAccepted = computed(() => {
-	return (
-		form.value.ruleCheck !== "" &&
-		form.value.name.trim() !== "" &&
-		form.value.date !== "" &&
-		form.value.trpgexp !== "" &&
-		form.value.commNum.trim() !== "" &&
-		form.value.regnum !== "" &&
-		form.value.regage !== "" &&
-		License.value
+        return (
+                form.value.ruleCheck !== "" &&
+                form.value.name.trim() !== "" &&
+                form.value.date !== "" &&
+                form.value.trpgexp !== "" &&
+                form.value.commNum.trim() !== "" &&
+                form.value.regnum !== "" &&
+                form.value.regage !== "" &&
+                License.value &&
+                pinballCleared.value
   );
 });
 
@@ -274,15 +301,23 @@ const readRate = computed(() => pipe(
   },
 ))
 
-// 計算 disabled 狀態
-const disabled = computed(() => readRate.value < 100);
-
-// 監聽 readRate，當等於 100 時啟用 license
-watch(readRate, (newRate) => {
-  if (newRate === 100) {
+// 監聽閱讀率與彈珠台進度，只有同時完成才會自動勾選
+watch([readRate, pinballCleared], ([newRate, cleared]) => {
+  if (newRate === 100 && cleared) {
     License.value = true;
   }
 });
+
+const handlePinballUpdate = (payload: { collected: number; total: number; score: number }) => {
+  pinballProgress.value = payload;
+  if (payload.total > 0 && payload.collected >= payload.total) {
+    pinballCleared.value = true;
+  }
+};
+
+const handlePinballCompleted = () => {
+  pinballCleared.value = true;
+};
 
 const form = ref({
   ruleCheck: "",
@@ -676,6 +711,26 @@ input[type="button"]:hover
   position: relative
   text-align: left
   font-size: 20px
+
+.pinball-section
+  margin-top: 20px
+  display: flex
+  flex-direction: column
+  gap: 12px
+
+.pinball-widget
+  width: 100%
+  max-width: 420px
+  align-self: center
+
+.pinball-status
+  margin: 0
+  font-weight: bold
+  text-align: center
+  color: #5a3c71
+
+.pinball-status.completed
+  color: #0f6d4a
 
 #scrollToBottomButton
   position: sticky
