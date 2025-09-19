@@ -1,19 +1,4 @@
 <template>
-  <teleport to="body">
-    <util-pinball />
-    <div
-      v-pinball-mech
-      class="wall fixed bottom-0 left-0 h-4 w-full rounded-full"
-    />
-    <div
-      v-pinball-mech
-      class="wall fixed top-0 left-0 h-full w-4 rounded-full"
-    />
-    <div
-      v-pinball-mech
-      class="wall fixed top-0 right-0 h-full w-4 rounded-full"
-    />
-  </teleport>
   <div class="container">
     <!-- Header -->
     <div  id="head-ear" class="card-header">
@@ -220,8 +205,6 @@ import { useElementVisibilityTime } from '../composables/use-element-visibility-
 import ToggleProactive from '../toggle-proactive.vue' 
 import CryptoJS from "crypto-js";
 import WrapperCatEar from '../wrapper-cat-ear.vue'
-import UtilPinball from './util-pinball.vue'
-import { vPinballMech } from './v-pinball-mech'
 
 const formTitle = ref("");
 const EventDate1 = ref("");
@@ -519,8 +502,6 @@ function deleteCookie(name: string) {
 
 <style scoped lang="sass">
 // 這裡加入你原本的 CSS
-  .wall
-    background: transparent
   div#app
     font-family: Arial, sans-serif;
     background-color: #DBB3B3;

@@ -3,6 +3,8 @@ import Header from './components/Header.vue';
 import Form from './components/Form.vue';
 import Pending from './components/Pending.vue';
 import Close from './components/Close.vue';
+import UtilPinball from './components/util-pinball.vue'
+import { vPinballMech } from './components/v-pinball-mech'
 
 import { ref, onMounted } from "vue";
 
@@ -75,6 +77,19 @@ async function loadEnvData() {
 
 <template>
   <div>
+    <util-pinball />
+    <div
+      v-pinball-mech
+      class="wall fixed bottom-0 left-0 h-4 w-full rounded-full"
+    />
+    <div
+      v-pinball-mech
+      class="wall fixed top-0 left-0 h-full w-4 rounded-full"
+    />
+    <div
+      v-pinball-mech
+      class="wall fixed top-0 right-0 h-full w-4 rounded-full"
+    />
     <main>
 	  <div v-if="Phase === 'Form'"><Form /></div>
 	  <div v-else-if="Phase === 'Pending'"><Pending /></div>
@@ -92,5 +107,9 @@ main {
 
 body {
   background-color: #DBB3B3;
+}
+
+.wall {
+  background: transparent;
 }
 </style>
