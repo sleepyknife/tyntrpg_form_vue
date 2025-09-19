@@ -3,15 +3,15 @@
     <util-pinball />
     <div
       v-pinball-mech
-      class="wall absolute bottom-0 left-0 hidden h-4 w-full rounded-full md:block"
+      class="wall fixed bottom-0 left-0 hidden h-4 w-full rounded-full md:block"
     />
     <div
       v-pinball-mech
-      class="wall absolute top-0 left-0 hidden h-full w-4 rounded-full md:block"
+      class="wall fixed top-0 left-0 hidden h-full w-4 rounded-full md:block"
     />
     <div
       v-pinball-mech
-      class="wall absolute top-0 right-0 hidden h-full w-4 rounded-full md:block"
+      class="wall fixed top-0 right-0 hidden h-full w-4 rounded-full md:block"
     />
     <!-- Header -->
     <div  id="head-ear" class="card-header">
