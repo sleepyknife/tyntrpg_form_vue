@@ -19,7 +19,6 @@ import { useEventListener, useMouse, useVibrate } from '@vueuse/core'
 import { debounce } from 'lodash-es'
 import { computed, reactive, ref, watch } from 'vue'
 
-interface Props { }
 interface Emits {
   start: [data: {
     startPoint: { x: number; y: number };
@@ -35,7 +34,6 @@ interface Emits {
     length: number;
   }];
 }
-const props = withDefaults(defineProps<Props>(), {})
 const emit = defineEmits<Emits>()
 
 const mouse = reactive(useMouse({ type: 'client' }))

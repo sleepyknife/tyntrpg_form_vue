@@ -1,18 +1,13 @@
 import type { MechOptions } from './util-pinball-store'
 import { useElementBounding, useRafFn } from '@vueuse/core'
 import anime from 'animejs'
-import { clone, defaultTo, isString, pipe, when } from 'remeda'
+import { clone, isString } from 'remeda'
 import { type Directive, effectScope, reactive, watch } from 'vue'
 import { utilPinballStore as store } from './util-pinball-store'
 
 const defaultOptions: MechOptions = {
   type: 'bumper',
 }
-
-/** 儲存前後文，將 mounted 資訊傳遞至 unmounted */
-const ctxMap = new WeakMap<HTMLElement, {
-  cleanup: () => void;
-}>()
 
 /** @default 'bumper' */
 export const vPinballMech: Directive<
@@ -29,14 +24,14 @@ export const vPinballMech: Directive<
     scope.run(() => {
       const bounding = reactive(useElementBounding(el))
 
-      const options = pipe(
-        binding.value,
-        when(
-          isString,
-          (type) => ({ type: type as MechOptions['type'] }),
-        ),
-        defaultTo(clone(defaultOptions)),
-      )
+      let options: MechOptions;
+      if (isString(binding.value)) {
+        options = { type: binding.value as MechOptions['type'] };
+      } else if (typeof binding.value === 'object' && binding.value !== null) {
+        options = { ...defaultOptions, ...binding.value };
+      } else {
+        options = clone(defaultOptions);
+      }
 
       const id = store.add({
         options,
@@ -90,10 +85,8 @@ export const vPinballMech: Directive<
         }
 
         if (mech?.options.type === 'spinner') {
-          const targetRotateX = pipe(
-            Number.parseInt(`${anime.get(el, 'rotateX')}`),
-            (value) => 360 - (value % 360) + 360,
-          )
+          const currentRotation = Number.parseInt(`${anime.get(el, 'rotateX')}`) || 0;
+          const targetRotateX = 360 - (currentRotation % 360) + 360;
           anime({
             targets: el,
             rotateX: [

@@ -269,6 +269,9 @@ function handleShotStart() {
 const handleShotCommit: ShotVectorControlProps['onCommit'] = ({
   direction,
   length,
+}: {
+  direction: { x: number; y: number };
+  length: number;
 }) => {
   Matter.Body.setStatic(ball, false)
 
