@@ -22,42 +22,42 @@
     </div>
 
     <!-- 使用條款 -->
-    <div class="card">
+    <div class="card" style="position: relative;">
 	  <wrapper-cat-ear
 			  main-color="#3b3b3b"
 			  inner-color="#ffc2b8"
 			>
-      <h2>
+      <h2 v-pinball-mech="bumperOptions">
 	  報名紀錄使用條款(請蒐集貓貓並勾選確認)
 	  </h2>
       <div id="termsContainer" class="content">
-        <p :ref="titleRefList.set">🐈親愛的玩家：🐈</p>
-        <p>為了提升網站安全性和服務品質，我們將會收集 Cookie。</p>
-        <b>相關資訊將會經加密演算法處理，避免產生可以直接識別您身份的個人資料。</b>
-        <a href="https://cryptojs.gitbook.io/docs/">演算法參考文檔</a>
+        <p :ref="titleRefList.set"><span v-pinball-mech="'spinner'">🐈親愛的玩家：🐈</span></p>
+        <p><span v-pinball-mech="bumperOptions">為了提升網站安全性和服務品質，我們將會收集 Cookie。</span></p>
+        <b><span v-pinball-mech="bumperOptions">相關資訊將會經加密演算法處理，避免產生可以直接識別您身份的個人資料。</span></b>
+        <a href="https://cryptojs.gitbook.io/docs/" v-pinball-mech="'spinner'">演算法參考文檔</a>
 
-        <p :ref="titleRefList.set">🐈我們使用 Cookies 的目的：🐈</p>
+        <p :ref="titleRefList.set"><span v-pinball-mech="'spinner'">🐈我們使用 Cookies 的目的：🐈</span></p>
         <ul>
-          <li>確保活動正常運作。</li>
-          <li>提升活動品質。</li>
-          <li>監測和預防潛在的惡意行為。</li>
+          <li><span v-pinball-mech="bumperOptions">確保活動正常運作。</span></li>
+          <li><span v-pinball-mech="bumperOptions">提升活動品質。</span></li>
+          <li><span v-pinball-mech="bumperOptions">監測和預防潛在的惡意行為。</span></li>
         </ul>
 
-        <p>您的選擇：</p>
-        <p :ref="titleRefList.set">🐈您可以選擇是否接受 Cookies，若拒絕可能無法使用本表單。🐈</p>
+        <p><span v-pinball-mech="'spinner'">您的選擇：</span></p>
+        <p :ref="titleRefList.set"><span v-pinball-mech="bumperOptions">🐈您可以選擇是否接受 Cookies，若拒絕可能無法使用本表單。🐈</span></p>
 
-        <p>聯繫方式：</p>
+        <p><span v-pinball-mech="'spinner'">聯繫方式：</span></p>
         <ul>
-          <li>聯繫 盧靜: rutkking@gmail.com</li>
+          <li><span v-pinball-mech="bumperOptions">聯繫 盧靜: rutkking@gmail.com</span></li>
           <li>
-            🐈桃推相關粉專🐈：
-            <a href="https://linktr.ee/tyntrpg" :ref="titleRefList.set">https://linktr.ee/tyntrpg</a>
+            <span v-pinball-mech="'spinner'">🐈桃推相關粉專🐈：</span>
+            <a href="https://linktr.ee/tyntrpg" :ref="titleRefList.set" v-pinball-mech="'spinner'">https://linktr.ee/tyntrpg</a>
           </li>
         </ul>
 
       </div>
-	  <p>閱讀率：{{ readRate.toFixed(1) }}%</p>
-	  <h2>我已詳閱上述須知</h2>
+	  <p v-pinball-mech="bumperOptions">閱讀率：{{ readRate.toFixed(1) }}%</p>
+	  <h2 v-pinball-mech="bumperOptions">我已詳閱上述須知</h2>
 			<toggle-proactive
 			  class="hand"
 			  id="confirmCheckbox"
@@ -71,6 +71,7 @@
 			  thumbClass="#FFF"
 			/>
 		</wrapper-cat-ear>	
+      <util-pinball />
     </div>
 
     <!-- 報名表單 -->
@@ -205,6 +206,13 @@ import { useElementVisibilityTime } from '../composables/use-element-visibility-
 import ToggleProactive from '../toggle-proactive.vue' 
 import CryptoJS from "crypto-js";
 import WrapperCatEar from '../wrapper-cat-ear.vue'
+import UtilPinball from './util-pinball.vue'
+import { vPinballMech } from './v-pinball-mech'
+
+const bumperOptions = {
+  type: 'bumper',
+  radius: 999,
+} as const
 
 const formTitle = ref("");
 const EventDate1 = ref("");
