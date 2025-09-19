@@ -257,7 +257,7 @@ onMounted(() => {
       height,
       background: 'transparent',
       wireframeBackground: 'transparent',
-      wireframes: false,
+      wireframes: true,
     },
   })
 
