@@ -77,19 +77,21 @@ async function loadEnvData() {
 
 <template>
   <div>
-    <util-pinball />
-    <div
-      v-pinball-mech
-      class="wall fixed bottom-0 left-0 h-4 w-full rounded-full"
-    />
-    <div
-      v-pinball-mech
-      class="wall fixed top-0 left-0 h-full w-4 rounded-full"
-    />
-    <div
-      v-pinball-mech
-      class="wall fixed top-0 right-0 h-full w-4 rounded-full"
-    />
+    <Teleport to="body">
+      <util-pinball />
+      <div
+        v-pinball-mech
+        class="wall fixed bottom-0 left-0 h-4 w-full rounded-full"
+      />
+      <div
+        v-pinball-mech
+        class="wall fixed top-0 left-0 h-full w-4 rounded-full"
+      />
+      <div
+        v-pinball-mech
+        class="wall fixed top-0 right-0 h-full w-4 rounded-full"
+      />
+    </Teleport>
     <main>
 	  <div v-if="Phase === 'Form'"><Form /></div>
 	  <div v-else-if="Phase === 'Pending'"><Pending /></div>
