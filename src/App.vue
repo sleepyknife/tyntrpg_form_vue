@@ -112,6 +112,6 @@ body {
 }
 
 .wall {
-  background: transparent;
+  background: rgba(0, 0, 0, 0.2);
 }
 </style>
