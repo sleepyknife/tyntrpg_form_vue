@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
+let ctx: CanvasRenderingContext2D | null = null
 let animationId: number | null = null
 let resizeHandler: (() => void) | null = null
 
@@ -42,69 +43,71 @@ function createPetal(canvas: HTMLCanvasElement, fromTop = false): Petal {
   }
 }
 
-function drawPetal(ctx: CanvasRenderingContext2D, petal: Petal) {
-  ctx.save()
-  ctx.translate(petal.x, petal.y)
-  ctx.rotate(petal.rotation)
-  ctx.globalAlpha = petal.opacity
+function drawPetal(context: CanvasRenderingContext2D, petal: Petal) {
+  context.save()
+  context.translate(petal.x, petal.y)
+  context.rotate(petal.rotation)
+  context.globalAlpha = petal.opacity
 
-  // Outer petal fill
-  ctx.fillStyle = petal.color
-  ctx.beginPath()
-  ctx.moveTo(0, 0)
-  ctx.bezierCurveTo(
+  context.fillStyle = petal.color
+  context.beginPath()
+  context.moveTo(0, 0)
+  context.bezierCurveTo(
     petal.size * 0.6, -petal.size * 0.35,
     petal.size * 1.1, petal.size * 0.4,
     0, petal.size * 1.1
   )
-  ctx.bezierCurveTo(
+  context.bezierCurveTo(
     -petal.size * 1.1, petal.size * 0.4,
     -petal.size * 0.6, -petal.size * 0.35,
     0, 0
   )
-  ctx.fill()
+  context.fill()
 
-  // Subtle center line
-  ctx.strokeStyle = 'rgba(255,255,255,0.35)'
-  ctx.lineWidth = 0.8
-  ctx.beginPath()
-  ctx.moveTo(0, 0)
-  ctx.lineTo(0, petal.size * 0.9)
-  ctx.stroke()
+  context.strokeStyle = 'rgba(255,255,255,0.35)'
+  context.lineWidth = 0.8
+  context.beginPath()
+  context.moveTo(0, 0)
+  context.lineTo(0, petal.size * 0.9)
+  context.stroke()
 
-  ctx.restore()
+  context.restore()
 }
 
 onMounted(() => {
   const canvas = canvasRef.value
   if (!canvas) return
-  const ctx = canvas.getContext('2d')
+  ctx = canvas.getContext('2d')
   if (!ctx) return
 
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
 
-  // Scatter petals across the full screen at start
   const petals: Petal[] = Array.from({ length: PETAL_COUNT }, () =>
     createPetal(canvas, false)
   )
 
   resizeHandler = () => {
-    canvas.width = window.innerWidth
-    canvas.height = window.innerHeight
+    if (!canvasRef.value) return
+    canvasRef.value.width = window.innerWidth
+    canvasRef.value.height = window.innerHeight
   }
   window.addEventListener('resize', resizeHandler)
 
   let lastTime = 0
 
   function animate(now: number) {
-    const delta = Math.min((now - lastTime) / 16.67, 3) // cap at 3x normal
+    const currentCanvas = canvasRef.value
+    const currentCtx = ctx
+    if (!currentCanvas || !currentCtx) return
+
+    const delta = Math.min((now - lastTime) / 16.67, 3)
     lastTime = now
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    currentCtx.clearRect(0, 0, currentCanvas.width, currentCanvas.height)
 
     for (const petal of petals) {
-      drawPetal(ctx, petal)
+      drawPetal(currentCtx, petal)
 
       const sway = Math.sin(now * petal.swaySpeed + petal.swayOffset) * 0.8
       petal.x += (petal.speedX + sway) * delta
@@ -113,11 +116,11 @@ onMounted(() => {
 
       const margin = petal.size * 2
       if (
-        petal.y > canvas.height + margin ||
+        petal.y > currentCanvas.height + margin ||
         petal.x < -margin ||
-        petal.x > canvas.width + margin
+        petal.x > currentCanvas.width + margin
       ) {
-        Object.assign(petal, createPetal(canvas, true))
+        Object.assign(petal, createPetal(currentCanvas, true))
       }
     }
 
@@ -130,6 +133,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (animationId !== null) cancelAnimationFrame(animationId)
   if (resizeHandler) window.removeEventListener('resize', resizeHandler)
+  ctx = null
 })
 </script>
 
