@@ -3,6 +3,7 @@ import Header from './components/Header.vue';
 import Form from './components/Form.vue';
 import Pending from './components/Pending.vue';
 import Close from './components/Close.vue';
+import SakuraFubuki from './components/SakuraFubuki.vue';
 
 import { ref, onMounted } from "vue";
 
@@ -75,6 +76,7 @@ async function loadEnvData() {
 
 <template>
   <div>
+    <SakuraFubuki />
     <main>
 	  <div v-if="Phase === 'Form'"><Form /></div>
 	  <div v-else-if="Phase === 'Pending'"><Pending /></div>
