@@ -18,6 +18,7 @@ interface Petal {
   color: string
   swayOffset: number
   swaySpeed: number
+  swayAmplitude: number
 }
 
 const PETAL_COUNT = 55
@@ -32,7 +33,7 @@ function createPetal(canvas: HTMLCanvasElement, fromTop = false): Petal {
     x: randomBetween(0, canvas.width),
     y: fromTop ? randomBetween(-80, -10) : randomBetween(-canvas.height, canvas.height),
     size: randomBetween(7, 16),
-    speedX: randomBetween(-0.3, 0.3),
+    speedX: randomBetween(-0.8, 0.8),
     speedY: randomBetween(0.5, 1.2),
     rotation: randomBetween(0, Math.PI * 2),
     rotationSpeed: randomBetween(-0.04, 0.04),
@@ -40,6 +41,7 @@ function createPetal(canvas: HTMLCanvasElement, fromTop = false): Petal {
     color: COLORS[Math.floor(Math.random() * COLORS.length)],
     swayOffset: randomBetween(0, Math.PI * 2),
     swaySpeed: randomBetween(0.008, 0.022),
+    swayAmplitude: randomBetween(0.5, 2.5),
   }
 }
 
@@ -109,7 +111,7 @@ onMounted(() => {
     for (const petal of petals) {
       drawPetal(currentCtx, petal)
 
-      const sway = Math.sin(now * petal.swaySpeed + petal.swayOffset) * 0.8
+      const sway = Math.sin(now * petal.swaySpeed + petal.swayOffset) * petal.swayAmplitude
       petal.x += (petal.speedX + sway) * delta
       petal.y += petal.speedY * delta
       petal.rotation += petal.rotationSpeed * delta
