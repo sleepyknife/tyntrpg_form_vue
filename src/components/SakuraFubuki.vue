@@ -19,6 +19,7 @@ interface Petal {
   swayAngle: number
   swaySpeed: number
   swayAmplitude: number
+  shapeType: number
 }
 
 const PETAL_COUNT = 55
@@ -42,6 +43,7 @@ function createPetal(canvas: HTMLCanvasElement, fromTop = false): Petal {
     swayAngle: randomBetween(0, Math.PI * 2),
     swaySpeed: randomBetween(0.01, 0.03),
     swayAmplitude: randomBetween(0.8, 2.2),
+    shapeType: Math.floor(Math.random() * 4),
   }
 }
 
@@ -50,27 +52,47 @@ function drawPetal(context: CanvasRenderingContext2D, petal: Petal) {
   context.translate(petal.x, petal.y)
   context.rotate(petal.rotation)
   context.globalAlpha = petal.opacity
-
   context.fillStyle = petal.color
+
+  const s = petal.size
   context.beginPath()
-  context.moveTo(0, 0)
-  context.bezierCurveTo(
-    petal.size * 0.6, -petal.size * 0.35,
-    petal.size * 1.1, petal.size * 0.4,
-    0, petal.size * 1.1
-  )
-  context.bezierCurveTo(
-    -petal.size * 1.1, petal.size * 0.4,
-    -petal.size * 0.6, -petal.size * 0.35,
-    0, 0
-  )
+
+  switch (petal.shapeType) {
+    case 0:
+      // 圓胖水滴形
+      context.moveTo(0, 0)
+      context.bezierCurveTo(s * 0.6, -s * 0.35, s * 1.1, s * 0.4, 0, s * 1.1)
+      context.bezierCurveTo(-s * 1.1, s * 0.4, -s * 0.6, -s * 0.35, 0, 0)
+      break
+    case 1:
+      // 細長橢圓形
+      context.moveTo(0, 0)
+      context.bezierCurveTo(s * 0.28, -s * 0.1, s * 0.32, s * 0.75, 0, s * 1.45)
+      context.bezierCurveTo(-s * 0.32, s * 0.75, -s * 0.28, -s * 0.1, 0, 0)
+      break
+    case 2:
+      // 頂端有缺口的櫻花花瓣
+      context.moveTo(0, 0)
+      context.bezierCurveTo(s * 0.7, -s * 0.15, s * 1.05, s * 0.45, s * 0.18, s * 1.05)
+      context.quadraticCurveTo(s * 0.06, s * 0.88, 0, s * 0.95)
+      context.quadraticCurveTo(-s * 0.06, s * 0.88, -s * 0.18, s * 1.05)
+      context.bezierCurveTo(-s * 1.05, s * 0.45, -s * 0.7, -s * 0.15, 0, 0)
+      break
+    case 3:
+      // 不對稱不規則形
+      context.moveTo(0, 0)
+      context.bezierCurveTo(s * 0.75, -s * 0.25, s * 0.95, s * 0.55, s * 0.1, s * 1.2)
+      context.bezierCurveTo(-s * 0.4, s * 1.05, -s * 1.05, s * 0.35, 0, 0)
+      break
+  }
+
   context.fill()
 
-  context.strokeStyle = 'rgba(255,255,255,0.35)'
-  context.lineWidth = 0.8
+  context.strokeStyle = 'rgba(255,255,255,0.3)'
+  context.lineWidth = 0.7
   context.beginPath()
   context.moveTo(0, 0)
-  context.lineTo(0, petal.size * 0.9)
+  context.lineTo(0, s * 0.85)
   context.stroke()
 
   context.restore()
