@@ -214,6 +214,7 @@ const License = ref(false);
 
 const termsAccepted = computed(() => {
 	return (
+		SubmitwebAppUrl.value !== "" &&
 		form.value.ruleCheck !== "" &&
 		form.value.name.trim() !== "" &&
 		form.value.date !== "" &&
@@ -239,22 +240,25 @@ onMounted(() => {
 })
 
 // ✅ 把 fetch 移到獨立的 async 函數
-async function loadEnvData() {
+async function loadEnvData(retriesLeft = 2) {
   try {
     const baseUrl = import.meta.env.BASE_URL; // 取得專案的根路徑
-    const response = await fetch(`${baseUrl}env.json`); // ✅ 正確取得 env.json
+    const response = await fetch(`${baseUrl}env.json`, { cache: "no-store" }); // ✅ 正確取得 env.json，避免瀏覽器快取舊資料
     if (!response.ok) {
       throw new Error("Failed to fetch env.json");
     }
     const data = await response.json();
     formTitle.value = data.TitleDate + '，桃園TRPG推廣活動報名表'; // 設定表單標題
 	SubmitwebAppUrl.value = data.webAppUrl;
-	
+
 	setTimeout(() => {
       EventDate1.value = data.ThisEventDate; // ✅ 延遲設定，避免 Vue 預選 radio
     }, 100);
   } catch (error) {
     console.error("Error loading env.json:", error);
+	if (retriesLeft > 0) {
+	  setTimeout(() => loadEnvData(retriesLeft - 1), 1000);
+	}
   }
 }
 
@@ -324,8 +328,12 @@ const ageOptions = [
 
 const submitForm = async () => {
   console.log("提交表單", form.value);
-  alert("表單提交成功");
-  
+
+  if (!SubmitwebAppUrl.value) {
+	alert("表單尚未載入完成，請重新整理頁面後再試一次");
+	return;
+  }
+
   form.value.userId = getCookie("userId");
   if (!form.value.userId) 
   {
@@ -361,10 +369,11 @@ const submitForm = async () => {
 	  body: formData.toString(), // 使用 URL 編碼格式
 	})
 	  .then(() => {
+		alert("表單提交成功");
 		window.location.href = "finish.html";
 	  })
 	  .catch(error => {
-		alert(error.message);
+		alert("提交過程中出現錯誤：" + error.message);
 	  });
 
 
