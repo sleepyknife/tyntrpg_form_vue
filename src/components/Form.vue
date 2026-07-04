@@ -351,17 +351,14 @@ const submitForm = async () => {
 
 	fetch(SubmitwebAppUrl.value, {
 	  method: "POST",
+	  mode: "no-cors", // Google Apps Script 不會回傳 CORS 標頭，讀取回應會被瀏覽器擋下，因此改用 no-cors 送出後直接視為成功
 	  headers: {
 		"Content-Type": "application/x-www-form-urlencoded",
 	  },
 	  body: formData.toString(), // 使用 URL 編碼格式
 	})
-	  .then(response => {
-		if (response.ok) {
-		  window.location.href = "finish.html";
-		} else {
-		  throw new Error("提交過程中出現錯誤");
-		}
+	  .then(() => {
+		window.location.href = "finish.html";
 	  })
 	  .catch(error => {
 		alert(error.message);
