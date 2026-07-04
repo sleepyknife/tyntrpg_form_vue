@@ -349,19 +349,19 @@ const submitForm = async () => {
 	formData.append("userId", form.value.userId);
 	formData.append("hashId", form.value.hashId);
 
+	// Google Apps Script 的 Web App (/exec) 不會回傳 Access-Control-Allow-Origin，
+	// 瀏覽器一律會擋掉回應內容（即使伺服器端已經成功寫入資料），
+	// 因此改用 no-cors：請求仍會送達並執行，只是拿不到回應內容可供判斷成功與否。
 	fetch(SubmitwebAppUrl.value, {
 	  method: "POST",
+	  mode: "no-cors",
 	  headers: {
 		"Content-Type": "application/x-www-form-urlencoded",
 	  },
 	  body: formData.toString(), // 使用 URL 編碼格式
 	})
-	  .then(response => {
-		if (response.ok) {
-		  window.location.href = "finish.html";
-		} else {
-		  throw new Error("提交過程中出現錯誤");
-		}
+	  .then(() => {
+		window.location.href = "finish.html";
 	  })
 	  .catch(error => {
 		alert(error.message);
