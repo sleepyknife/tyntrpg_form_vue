@@ -6,6 +6,7 @@ import Close from './components/Close.vue';
 import SakuraFubuki from './components/SakuraFubuki.vue';
 
 import { ref, onMounted } from "vue";
+import { registerSecretConsole } from './composables/secret-console';
 
 const Phase = ref("");
 
@@ -41,6 +42,8 @@ function showJojoCatConsole() {
     console.log('%c' + standName, 'color: cyan; font-size: 13px;');
     console.log('%c參考：https://trpgintaoyuan.weebly.com\n', 'font-size: 12px; color: blue; text-decoration: underline;');
     console.log('%c' + asciiCat, 'font-family: monospace; color: #993299; font-size: 13px; font-weight: bold;');
+    console.log('%c「…不過，既然你都走到這裡了。」', 'color: #999; font-size: 14px; font-style: italic;');
+    console.log('%c輸入 help() ，我告訴你這裡能做什麼。', 'font-size: 16px; color: #01814A; font-weight: bold;');
   }, 1000);
 }
 
@@ -49,6 +52,9 @@ onMounted(() => {
   // 讀取 env.json（單獨的 async 函數）
   loadEnvData();
   
+  // 註冊 console 秘密指令（help / ora / sakura …）
+  registerSecretConsole();
+
   // 顯示 JOJO 貓貓 Console 警告
   showJojoCatConsole();
 })
@@ -94,5 +100,48 @@ main {
 
 body {
   background-color: #DBB3B3;
+}
+
+/* ───────── 以下為 console 秘密指令用的特效 ───────── */
+
+/* zawa() ── ゴ ゴ ゴ 的顫抖 */
+body.secret-zawa main {
+  animation: secret-zawa-shake 0.12s infinite;
+}
+@keyframes secret-zawa-shake {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-2px, 1px); }
+  50%  { transform: translate(2px, -1px); }
+  75%  { transform: translate(-1px, -2px); }
+  100% { transform: translate(1px, 2px); }
+}
+
+/* rainbow() ── 標題跟著跑彩虹 */
+body.secret-rainbow .card-header {
+  background: linear-gradient(90deg, #FF5E5E, #FFA45E, #FFE45E, #7BE85E, #5EC8FF, #8A5EFF, #FF5ED8, #FF5E5E);
+  background-size: 400% 100%;
+  animation: secret-rainbow-slide 6s linear infinite;
+}
+@keyframes secret-rainbow-slide {
+  from { background-position: 0% 50%; }
+  to   { background-position: 400% 50%; }
+}
+
+/* requiem() ── 全解鎖後的金色鎮魂曲 */
+body.secret-requiem main {
+  filter: sepia(0.35) saturate(1.2);
+  transition: filter 1.2s ease;
+}
+body.secret-requiem .card-header {
+  background: #8a6d1f;
+  box-shadow: 0 0 24px rgba(212, 160, 23, 0.75);
+}
+
+/* 使用者若偏好減少動態效果，就別抖也別跑 */
+@media (prefers-reduced-motion: reduce) {
+  body.secret-zawa main,
+  body.secret-rainbow .card-header {
+    animation: none;
+  }
 }
 </style>
