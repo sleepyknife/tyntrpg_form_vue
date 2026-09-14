@@ -5,6 +5,7 @@
 		<wrapper-cat-ear
 			  main-color="#3b3b3b"
 			  inner-color="#ffc2b8"
+			  :action="catEarState.action"
 			>
 			<h2>
 				{{ formTitle }}
@@ -205,6 +206,7 @@ import { useElementVisibilityTime } from '../composables/use-element-visibility-
 import ToggleProactive from '../toggle-proactive.vue' 
 import CryptoJS from "crypto-js";
 import WrapperCatEar from '../wrapper-cat-ear.vue'
+import { catEarState } from '../composables/secret-effects'
 
 const formTitle = ref("");
 const EventDate1 = ref("");
