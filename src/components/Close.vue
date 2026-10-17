@@ -4,6 +4,7 @@
 			<wrapper-cat-ear
 			  main-color="#3b3b3b"
 			  inner-color="#ffc2b8"
+			  :action="catEarState.action"
 			>
 				<h1>{{formTitle}}</h1>
 				<br>
@@ -26,6 +27,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import WrapperCatEar from '../wrapper-cat-ear.vue'
+import { catEarState } from '../composables/secret-effects'
 
 const formTitle = ref("");
 const NextDate = ref("");

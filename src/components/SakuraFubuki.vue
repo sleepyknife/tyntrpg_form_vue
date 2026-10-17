@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { sakuraState } from '../composables/secret-effects'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 let ctx: CanvasRenderingContext2D | null = null
@@ -22,8 +23,7 @@ interface Petal {
   shapeType: number
 }
 
-const PETAL_COUNT = 55
-const COLORS = ['#FFB7C5', '#FFC4CE', '#FF8FAB', '#FFD6DD', '#FFA3B5', '#FFCCD4']
+let petals: Petal[] = []
 
 function randomBetween(min: number, max: number) {
   return Math.random() * (max - min) + min
@@ -39,7 +39,7 @@ function createPetal(canvas: HTMLCanvasElement, fromTop = false): Petal {
     rotation: randomBetween(0, Math.PI * 2),
     rotationSpeed: randomBetween(-0.02, 0.02),
     opacity: randomBetween(0.45, 0.85),
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    color: sakuraState.colors[Math.floor(Math.random() * sakuraState.colors.length)],
     swayAngle: randomBetween(0, Math.PI * 2),
     swaySpeed: randomBetween(0.01, 0.03),
     swayAmplitude: randomBetween(0.8, 2.2),
@@ -107,9 +107,23 @@ onMounted(() => {
   canvas.width = window.innerWidth
   canvas.height = window.innerHeight
 
-  const petals: Petal[] = Array.from({ length: PETAL_COUNT }, () =>
+  petals = Array.from({ length: sakuraState.petalCount }, () =>
     createPetal(canvas, false)
   )
+
+  // 花瓣數由 console 秘密指令（sakura / storm）調整
+  watch(() => sakuraState.petalCount, (count) => {
+    const currentCanvas = canvasRef.value
+    if (!currentCanvas) return
+    while (petals.length < count) petals.push(createPetal(currentCanvas, true))
+    petals.length = Math.min(petals.length, count)
+  })
+
+  // 換配色（rainbow / requiem）時讓現有花瓣即時換色
+  watch(() => sakuraState.colors, (colors) => {
+    for (const petal of petals)
+      petal.color = colors[Math.floor(Math.random() * colors.length)]
+  })
 
   resizeHandler = () => {
     if (!canvasRef.value) return
@@ -125,7 +139,7 @@ onMounted(() => {
     const currentCtx = ctx
     if (!currentCanvas || !currentCtx) return
 
-    const delta = Math.min((now - lastTime) / 16.67, 3)
+    const delta = Math.min((now - lastTime) / 16.67, 3) * sakuraState.speedFactor
     lastTime = now
 
     currentCtx.clearRect(0, 0, currentCanvas.width, currentCanvas.height)
@@ -158,6 +172,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (animationId !== null) cancelAnimationFrame(animationId)
   if (resizeHandler) window.removeEventListener('resize', resizeHandler)
+  petals = []
   ctx = null
 })
 </script>

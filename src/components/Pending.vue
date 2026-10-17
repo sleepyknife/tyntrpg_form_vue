@@ -4,7 +4,8 @@
 	<div class="form-container">
 		<wrapper-cat-ear
 			  main-color="#03a1fc"
-			  inner-color="#8f003e" >
+			  inner-color="#8f003e"
+			  :action="catEarState.action" >
 			<h1>{{formTitle}}</h1>
 			<br>
 			<br>本月活動尚未開始報名，不好意思，麻煩稍待相關資訊公布。
@@ -24,6 +25,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import WrapperCatEar from '../wrapper-cat-ear.vue'
+import { catEarState } from '../composables/secret-effects'
 
 const formTitle = ref("");
 const EventDate1 = ref("");
